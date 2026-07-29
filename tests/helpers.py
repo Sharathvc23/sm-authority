@@ -31,7 +31,9 @@ OTHER = Identity.from_seed(b"\x34" * 32)   # unrelated party
 ISS = "2026-07-28T12:00:00Z"
 AT = "2026-07-29T12:00:00Z"
 SUBJECT = "john@hotmail.com"
-ANCHOR = build_anchor(method="oidc", issuer="https://login.microsoftonline.com", anchor_id="oid-abc")
+ANCHOR = build_anchor(
+    method="oidc", issuer="https://login.microsoftonline.com", anchor_id="oid-abc"
+)
 
 
 def make_oidc_token(claims: dict[str, Any]) -> str:
@@ -50,7 +52,9 @@ def prior_evidence(*, signer: Identity = PRIOR, grantor: str | None = None,
     grantor = grantor or OWNER.did
     return build_evidence(
         PRIOR_BINDING_KEY, prior_did=signer.did, challenge=challenge,
-        signature=sign_binding_challenge(signer, subject=subject, grantor_did=grantor, challenge=challenge),
+        signature=sign_binding_challenge(
+            signer, subject=subject, grantor_did=grantor, challenge=challenge
+        ),
     )
 
 

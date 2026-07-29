@@ -30,6 +30,7 @@ from .evidence import (
     sign_binding_challenge,
     verify_envelope_signature,
 )
+from .verifiers import OIDCVerifier, PriorBindingKeyVerifier
 from .verify import (
     INDETERMINATE,
     REFUTED,
@@ -42,7 +43,6 @@ from .verify import (
     covers,
     verify_authority_evidence,
 )
-from .verifiers import OIDCVerifier, PriorBindingKeyVerifier
 
 __version__ = "0.0.1"
 

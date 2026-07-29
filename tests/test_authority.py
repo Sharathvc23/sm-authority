@@ -16,8 +16,8 @@ from sm_authority import (
 from sm_authority.evidence import CIVIC, OIDC, PRIOR_BINDING_KEY
 
 from .helpers import (
-    AT,
     ANCHOR,
+    AT,
     OTHER,
     OWNER,
     PRIOR,
@@ -136,6 +136,21 @@ def test_tampered_envelope_refuted_on_signature():
     env["subject"] = "attacker@evil.example"  # invalidates issuer signature
     v = verify_authority_evidence(env, _prior_verifiers(), AT)
     assert v.status == "REFUTED" and v.reason == "bad_signature", v
+
+
+def test_missing_required_field_is_malformed():
+    env = dict(envelope([prior_evidence()]))
+    del env["anchor"]  # structure check runs before signature
+    v = verify_authority_evidence(env, _prior_verifiers(), AT)
+    assert v.status == "REFUTED" and v.reason == "malformed", v
+    assert "anchor" in v.detail
+
+
+def test_unknown_version_is_malformed():
+    env = dict(envelope([prior_evidence()]))
+    env["version"] = "authority/9.9"
+    v = verify_authority_evidence(env, _prior_verifiers(), AT)
+    assert v.status == "REFUTED" and v.reason == "malformed", v
 
 
 # --- construction-time validation --------------------------------------------

@@ -1,13 +1,55 @@
 [build-system]
-requires = ["setuptools>=61"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "sm-authority"
-version = "0.0.1"
+version = "0.1.0"
 description = "Common Authority Evidence envelope — establishes sm-dat O1 (a grant's grantor/subject bound to the real owner) across OIDC, platform-install, domain, DID, civic, and recovery-key sources."
-requires-python = ">=3.10"
-dependencies = ["sm-arp"]
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+authors = [{ name = "Sharath (Stellarminds)" }]
+keywords = ["nanda", "ai-agents", "authority", "identity", "verifiable-credentials", "did"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Typing :: Typed",
+]
+dependencies = ["sm-arp>=0.3.0"]
 
-[tool.setuptools.packages.find]
-include = ["sm_authority*"]
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "ruff>=0.4", "mypy>=1.0", "coverage>=7.0"]
+
+[project.urls]
+Homepage = "https://github.com/Sharathvc23/sm-authority"
+Spec = "https://github.com/Sharathvc23/sm-authority/blob/main/SPEC.md"
+
+[tool.hatch.build.targets.wheel]
+packages = ["sm_authority"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[[tool.mypy.overrides]]
+module = ["sm_arp.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["sm_authority"]
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80

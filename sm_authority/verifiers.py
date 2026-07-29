@@ -21,7 +21,8 @@ same injected shape and are left to their providers.
 from __future__ import annotations
 
 import base64
-from typing import Any, Callable
+from collections.abc import Callable
+from typing import Any
 
 from sm_arp import pubkey_from_did
 

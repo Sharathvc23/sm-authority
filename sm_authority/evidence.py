@@ -28,7 +28,8 @@ evidence blocks, not the issuer.
 from __future__ import annotations
 
 import base64
-from typing import Any, Iterable
+from collections.abc import Iterable
+from typing import Any
 
 from sm_arp import Identity, canonical_bytes, pubkey_from_did
 
@@ -122,7 +123,9 @@ def verify_envelope_signature(env: dict[str, Any]) -> bool:
         return False
     body = {k: v for k, v in env.items() if k != "signature"}
     try:
-        pubkey_from_did(issuer).verify(base64.b64decode(sig), canonical_bytes(body, include_signature=False))
+        pubkey_from_did(issuer).verify(
+            base64.b64decode(sig), canonical_bytes(body, include_signature=False)
+        )
         return True
     except Exception:  # noqa: BLE001 — any failure is a failed verification
         return False
@@ -133,10 +136,11 @@ def binding_challenge_bytes(subject: str, grantor_did: str, challenge: str) -> b
     that ``grantor_did`` controls ``subject``. Binding the signature to both the
     subject and the grantor_did is what stops a captured signature being replayed
     onto a different subject or a different key."""
-    return canonical_bytes(
+    data: bytes = canonical_bytes(
         {"subject": subject, "grantor_did": grantor_did, "challenge": challenge},
         include_signature=False,
     )
+    return data
 
 
 def sign_binding_challenge(

@@ -25,7 +25,7 @@ locator↔anchor↔grantor_did record a registry checks a binding grant against.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any, Protocol, runtime_checkable
 
 from .evidence import verify_envelope_signature
@@ -68,6 +68,7 @@ class AuthorityVerdict:
     reason: str
     binding: AuthorityBinding | None = None
     evidence_results: tuple[tuple[str, EvidenceVerdict], ...] = ()
+    detail: str = ""
 
     @property
     def ok(self) -> bool:
@@ -88,7 +89,7 @@ class Policy:
 
 
 def _t(ts: str) -> datetime:
-    return datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(timezone.utc)
+    return datetime.fromisoformat(ts.replace("Z", "+00:00")).astimezone(UTC)
 
 
 def verify_authority_evidence(
