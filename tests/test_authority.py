@@ -24,6 +24,7 @@ from .helpers import (
     SUBJECT,
     demo_token_validator,
     envelope,
+    make_oidc_token,
     oidc_evidence,
     prior_evidence,
 )
@@ -151,6 +152,47 @@ def test_unknown_version_is_malformed():
     env["version"] = "authority/9.9"
     v = verify_authority_evidence(env, _prior_verifiers(), AT)
     assert v.status == "REFUTED" and v.reason == "malformed", v
+
+
+# --- verifier edge branches --------------------------------------------------
+
+def test_malformed_prior_evidence_block_is_indeterminate():
+    block = {"type": PRIOR_BINDING_KEY, "claims": {"prior_did": PRIOR.did}}  # no sig/challenge
+    v = verify_authority_evidence(envelope([block]), _prior_verifiers(), AT)
+    assert v.evidence_results[0][1].reason == "malformed_evidence"
+    assert v.status == "INDETERMINATE"
+
+
+def test_oidc_missing_token_block_is_indeterminate():
+    block = {"type": OIDC, "claims": {}}
+    v = verify_authority_evidence(envelope([block]), _oidc_verifiers(), AT)
+    assert v.evidence_results[0][1].reason == "malformed_evidence"
+
+
+def test_oidc_nonce_mismatch_refuted():
+    claims = {"iss": "https://login.microsoftonline.com", "oid": "oid-abc", "nonce": "n1"}
+    block = {"type": OIDC, "claims": {"token": make_oidc_token(claims), "nonce": "n2"}}
+    v = verify_authority_evidence(envelope([block]), _oidc_verifiers(), AT)
+    assert v.status == "REFUTED" and v.reason == "nonce_mismatch", v
+
+
+def test_oidc_validator_that_raises_is_indeterminate():
+    def boom(_token):
+        raise RuntimeError("jwks unreachable")
+
+    verifiers = {OIDC: OIDCVerifier(boom)}
+    v = verify_authority_evidence(envelope([oidc_evidence()]), verifiers, AT)
+    assert v.status == "INDETERMINATE"
+    assert v.evidence_results[0][1].reason == "validator_error"
+
+
+def test_broken_verifier_is_indeterminate_not_a_crash():
+    class Broken:
+        def verify(self, block, env):
+            raise RuntimeError("verifier bug")
+
+    v = verify_authority_evidence(envelope([prior_evidence()]), {PRIOR_BINDING_KEY: Broken()}, AT)
+    assert v.evidence_results[0][1].reason == "verifier_error"
 
 
 # --- construction-time validation --------------------------------------------
