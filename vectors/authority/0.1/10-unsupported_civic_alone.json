@@ -1,0 +1,32 @@
+{
+  "at": "2026-07-29T12:00:00Z",
+  "env": {
+    "anchor": {
+      "id": "oid-abc",
+      "issuer": "https://login.microsoftonline.com",
+      "method": "oidc"
+    },
+    "evidence": [
+      {
+        "claims": {
+          "credential": "opaque",
+          "scheme": "us-login-gov"
+        },
+        "type": "civic"
+      }
+    ],
+    "grantor_did": "did:key:z6MkknhhwAGsRrcTTthPSsBbQtrNX6CMqt4poro5jdP6uCue",
+    "issued_at": "2026-07-28T12:00:00Z",
+    "issuer_did": "did:key:z6MkjJRuJtMxfTErK55eWeV7FQLLxpsvzSUQ3AC6DmdNPFja",
+    "not_after": "2027-01-01T00:00:00Z",
+    "not_before": "2026-07-28T12:00:00Z",
+    "signature": "GL/vMg5G0can/C6IHKc6KrwHfjPpindiAncTISOuYOFhYuLV2Nq0oMuvHkrDCsuH1ndrrCkznWJb9bsxVv/ZDg==",
+    "subject": "john@hotmail.com",
+    "version": "authority/0.1"
+  },
+  "expect": [
+    "INDETERMINATE",
+    "insufficient_evidence"
+  ],
+  "name": "unsupported_civic_alone"
+}

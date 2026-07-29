@@ -1,0 +1,32 @@
+{
+  "at": "2026-07-29T12:00:00Z",
+  "env": {
+    "anchor": {
+      "id": "oid-abc",
+      "issuer": "https://login.microsoftonline.com",
+      "method": "oidc"
+    },
+    "evidence": [
+      {
+        "claims": {
+          "nonce": "n1",
+          "token": "eyJpc3MiOiAiaHR0cHM6Ly9sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tIiwgIm5vbmNlIjogIm4xIiwgIm9pZCI6ICJvaWQtYWJjIn0="
+        },
+        "type": "oidc"
+      }
+    ],
+    "grantor_did": "did:key:z6MkknhhwAGsRrcTTthPSsBbQtrNX6CMqt4poro5jdP6uCue",
+    "issued_at": "2026-07-28T12:00:00Z",
+    "issuer_did": "did:key:z6MkjJRuJtMxfTErK55eWeV7FQLLxpsvzSUQ3AC6DmdNPFja",
+    "not_after": "2027-01-01T00:00:00Z",
+    "not_before": "2026-07-28T12:00:00Z",
+    "signature": "gwowd70xU/mudEjf1VCoND2p0uLL5qwYF3VoILfi2TPnThVtiMm0DxPl+dI3Hsl2q+cMUcARBbqh1dxVd3bGBg==",
+    "subject": "john@hotmail.com",
+    "version": "authority/0.1"
+  },
+  "expect": [
+    "VERIFIED",
+    "ok"
+  ],
+  "name": "oidc_verified"
+}

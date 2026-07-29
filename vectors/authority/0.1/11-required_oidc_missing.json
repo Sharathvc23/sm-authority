@@ -1,0 +1,38 @@
+{
+  "at": "2026-07-29T12:00:00Z",
+  "env": {
+    "anchor": {
+      "id": "oid-abc",
+      "issuer": "https://login.microsoftonline.com",
+      "method": "oidc"
+    },
+    "evidence": [
+      {
+        "claims": {
+          "challenge": "chal-1",
+          "prior_did": "did:key:z6Mkg49NtQR2LyYRDCQFK4w1VVHqhypZSSRo7HsyuN7SV7v5",
+          "signature": "fsGSmAvwkGY4LrQke+8gOthRAM+W6tUxrJS0slSmgQLMRsd7nHUf1sjFjjEsSXyNSpIFAOCL1I7IiqcIlNKrBg=="
+        },
+        "type": "prior_binding_key"
+      }
+    ],
+    "grantor_did": "did:key:z6MkknhhwAGsRrcTTthPSsBbQtrNX6CMqt4poro5jdP6uCue",
+    "issued_at": "2026-07-28T12:00:00Z",
+    "issuer_did": "did:key:z6MkjJRuJtMxfTErK55eWeV7FQLLxpsvzSUQ3AC6DmdNPFja",
+    "not_after": "2027-01-01T00:00:00Z",
+    "not_before": "2026-07-28T12:00:00Z",
+    "signature": "2fqQ6DdRU/AsWoWoLHo/uSPzQstLX9YQjQU2g1c8ayzBAWqw1tCxAxGfiKm/RhiIfB7AI/fdfOg9FkQ/WWqwAA==",
+    "subject": "john@hotmail.com",
+    "version": "authority/0.1"
+  },
+  "expect": [
+    "INDETERMINATE",
+    "required_evidence_missing"
+  ],
+  "name": "required_oidc_missing",
+  "policy": {
+    "required_types": [
+      "oidc"
+    ]
+  }
+}

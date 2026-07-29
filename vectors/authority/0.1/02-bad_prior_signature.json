@@ -1,0 +1,33 @@
+{
+  "at": "2026-07-29T12:00:00Z",
+  "env": {
+    "anchor": {
+      "id": "oid-abc",
+      "issuer": "https://login.microsoftonline.com",
+      "method": "oidc"
+    },
+    "evidence": [
+      {
+        "claims": {
+          "challenge": "chal-1",
+          "prior_did": "did:key:z6Mkg49NtQR2LyYRDCQFK4w1VVHqhypZSSRo7HsyuN7SV7v5",
+          "signature": "lAAdzFZZcoWcAO5Zxny8lXECu/8t9eGLv/5M7sGTUDwu1ZsoSA1hMwmsGTR1z7XMtWay8hCoJfyJaX2wpZhdDQ=="
+        },
+        "type": "prior_binding_key"
+      }
+    ],
+    "grantor_did": "did:key:z6MkknhhwAGsRrcTTthPSsBbQtrNX6CMqt4poro5jdP6uCue",
+    "issued_at": "2026-07-28T12:00:00Z",
+    "issuer_did": "did:key:z6MkjJRuJtMxfTErK55eWeV7FQLLxpsvzSUQ3AC6DmdNPFja",
+    "not_after": "2027-01-01T00:00:00Z",
+    "not_before": "2026-07-28T12:00:00Z",
+    "signature": "unq9JI+VjY4kf+nuAoKq6O25QQ0c6OSfbd0lUbDNUQc2D4U+BHPs/Iq4/73KVFagjliPrEktpkk38d4YUx1eBA==",
+    "subject": "john@hotmail.com",
+    "version": "authority/0.1"
+  },
+  "expect": [
+    "REFUTED",
+    "bad_prior_signature"
+  ],
+  "name": "bad_prior_signature"
+}

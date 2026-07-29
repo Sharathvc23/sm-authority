@@ -1,0 +1,32 @@
+{
+  "at": "2026-07-29T12:00:00Z",
+  "env": {
+    "anchor": {
+      "id": "oid-abc",
+      "issuer": "https://login.microsoftonline.com",
+      "method": "oidc"
+    },
+    "evidence": [
+      {
+        "claims": {
+          "nonce": "n1",
+          "token": "%%not-base64%%"
+        },
+        "type": "oidc"
+      }
+    ],
+    "grantor_did": "did:key:z6MkknhhwAGsRrcTTthPSsBbQtrNX6CMqt4poro5jdP6uCue",
+    "issued_at": "2026-07-28T12:00:00Z",
+    "issuer_did": "did:key:z6MkjJRuJtMxfTErK55eWeV7FQLLxpsvzSUQ3AC6DmdNPFja",
+    "not_after": "2027-01-01T00:00:00Z",
+    "not_before": "2026-07-28T12:00:00Z",
+    "signature": "ytRaxlO2ip5YSvsoO91LDXrq5eHr21Hsidx8B+f9IVaYBd15aYG5R3Wb2BvrCGKM1292ROXupiuGQgC3xyyUAg==",
+    "subject": "john@hotmail.com",
+    "version": "authority/0.1"
+  },
+  "expect": [
+    "REFUTED",
+    "token_invalid"
+  ],
+  "name": "oidc_token_invalid"
+}
