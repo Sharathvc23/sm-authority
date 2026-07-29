@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -e ".[dev]"
+      - run: ruff check sm_authority tests
+      - run: mypy sm_authority
+      - run: coverage run -m pytest && coverage report
+      - name: Vectors are reproducible
+        run: |
+          python vectors/_generate.py
+          git diff --exit-code vectors/ || (echo "::error::vectors/ drifted — re-run vectors/_generate.py and commit" && exit 1)
