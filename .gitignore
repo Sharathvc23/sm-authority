@@ -1,15 +1,52 @@
+# Python
 __pycache__/
 *.py[cod]
 *.egg-info/
 .eggs/
 build/
 dist/
+*.whl
+
+# Virtual environments
 .venv/
 .venv-*/
+venv/
+env/
+
+# Test / type / lint caches and artifacts
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.tox/
 .coverage
 .coverage.*
 htmlcov/
 coverage.xml
+
+# Editors / OS
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Secrets / local env
+.env
+.env.*
+*.pem
+
+# Dev / internal / audit artifacts — never commit these
+scratch/
+tmp/
+notes/
+NOTES.md
+TODO.md
+*.log
+*.bak
+*.orig
+.claude/
+internal/
+audit/
+AUDIT*.md
+DISCUSSION*.md
