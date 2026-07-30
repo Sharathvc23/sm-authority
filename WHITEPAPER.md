@@ -24,9 +24,9 @@ verifiers, so the core cannot silently vouch for something it did not check.
 The actors who most need an agent binding often have no DNS and no registry account:
 `john@hotmail.com`, a restaurant whose only control plane is Toast. Their authority is fragmented
 across an IdP token here, a platform install there, a domain challenge, a civic credential, an old
-recovery key. Domain Connect could assume one unambiguous authority — control of the DNS zone.
-Here there is none, and no common way to state "this key is controlled by the party behind this
-locator." So O1 goes unmet and every downstream grant is a leap of faith.
+recovery key. A single-namespace scheme could assume one unambiguous authority — control of that
+namespace. Here there is none, and no common way to state "this key is controlled by the party
+behind this locator." So O1 goes unmet and every downstream grant is a leap of faith.
 
 ## 2. Design axioms
 
