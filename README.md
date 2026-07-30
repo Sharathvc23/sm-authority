@@ -61,3 +61,11 @@ evidence type is INDETERMINATE, never ignored.
 - `vectors/authority/0.1/` — deterministic conformance corpus; regenerate with
   `python vectors/_generate.py`, replay with `pytest`.
 - Depends only on `sm-arp` (identity, canonicalization, signatures). No transport, no framework.
+
+## License
+
+MIT © 2026 StellarMinds. See [LICENSE](./LICENSE).
+
+---
+
+Part of the **NANDA** ecosystem · built by [StellarMinds](https://stellarminds.ai).

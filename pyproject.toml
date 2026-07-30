@@ -9,7 +9,7 @@ description = "Common Authority Evidence envelope — establishes sm-dat O1 (a g
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
-authors = [{ name = "Sharath (Stellarminds)" }]
+authors = [{ name = "StellarMinds", email = "hello@stellarminds.ai" }]
 keywords = ["nanda", "ai-agents", "authority", "identity", "verifiable-credentials", "did"]
 classifiers = [
     "Development Status :: 3 - Alpha",
