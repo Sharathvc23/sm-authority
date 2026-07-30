@@ -9,8 +9,8 @@
     "evidence": [
       {
         "claims": {
-          "nonce": "n1",
-          "token": "eyJpc3MiOiAiaHR0cHM6Ly9sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tIiwgIm5vbmNlIjogIm4xIiwgIm9pZCI6ICJvaWQtYWJjIn0="
+          "nonce_salt": "s1",
+          "token": "eyJpc3MiOiAiaHR0cHM6Ly9sb2dpbi5taWNyb3NvZnRvbmxpbmUuY29tIiwgIm5vbmNlIjogIjZkMTI5ODY1ZWY0Mjk2NDZhZmRiMjBiOGJiNmM0ZjdjY2U1ZWY2YjE3ZWM5NzkwM2IzZDk0ODMxY2IyNjczNGMiLCAib2lkIjogIm9pZC1hYmMifQ=="
         },
         "type": "oidc"
       }
@@ -20,7 +20,7 @@
     "issuer_did": "did:key:z6MkjJRuJtMxfTErK55eWeV7FQLLxpsvzSUQ3AC6DmdNPFja",
     "not_after": "2027-01-01T00:00:00Z",
     "not_before": "2026-07-28T12:00:00Z",
-    "signature": "gwowd70xU/mudEjf1VCoND2p0uLL5qwYF3VoILfi2TPnThVtiMm0DxPl+dI3Hsl2q+cMUcARBbqh1dxVd3bGBg==",
+    "signature": "36Cl0aZIus0zeaEZ++lG6gDV/unmGtKc77nzT7GHxF/8P7QGtJkW0CXopPA4bLIAiTlm3lGJn91oY60wfhpGCg==",
     "subject": "john@hotmail.com",
     "version": "authority/0.1"
   },
