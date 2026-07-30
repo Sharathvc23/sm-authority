@@ -21,7 +21,7 @@ from sm_authority import (
     sign_authority_evidence,
     sign_binding_challenge,
 )
-from sm_authority.evidence import OIDC, PRIOR_BINDING_KEY
+from sm_authority.evidence import OIDC, PRIOR_BINDING_KEY, oidc_binding_nonce
 
 ISSUER = Identity.from_seed(b"\x31" * 32)  # store assembling the evidence
 OWNER = Identity.from_seed(b"\x32" * 32)   # grantor_did (owner's binding key)
@@ -59,11 +59,18 @@ def prior_evidence(*, signer: Identity = PRIOR, grantor: str | None = None,
 
 
 def oidc_evidence(*, iss: str = "https://login.microsoftonline.com",
-                  oid: str = "oid-abc", nonce: str | None = "n1") -> dict:
+                  oid: str = "oid-abc", grantor: str | None = None,
+                  nonce_salt: str | None = "s1") -> dict:
+    """A bound oidc block: the token's signed nonce commits to ``grantor`` (default
+    OWNER, matching :func:`envelope`) via ``nonce_salt``, and the block ships the
+    salt for the verifier to recompute against."""
+    grantor = grantor or OWNER.did
     claims = {"iss": iss, "oid": oid}
-    if nonce is not None:
-        claims["nonce"] = nonce
-    return build_evidence(OIDC, token=make_oidc_token(claims), nonce=nonce)
+    extra: dict[str, Any] = {}
+    if nonce_salt is not None:
+        claims["nonce"] = oidc_binding_nonce(grantor, nonce_salt)
+        extra["nonce_salt"] = nonce_salt
+    return build_evidence(OIDC, token=make_oidc_token(claims), **extra)
 
 
 def envelope(evidence_blocks, *, subject: str = SUBJECT, anchor=None,

@@ -26,6 +26,8 @@ from .evidence import (
     build_anchor,
     build_authority_evidence,
     build_evidence,
+    did_key_jwk_thumbprint,
+    oidc_binding_nonce,
     sign_authority_evidence,
     sign_binding_challenge,
     verify_envelope_signature,
@@ -44,7 +46,7 @@ from .verify import (
     verify_authority_evidence,
 )
 
-__version__ = "0.0.1"
+__version__ = "0.2.0"
 
 __all__ = [
     "AUTHORITY_VERSION",
@@ -66,6 +68,8 @@ __all__ = [
     "verify_envelope_signature",
     "binding_challenge_bytes",
     "sign_binding_challenge",
+    "oidc_binding_nonce",
+    "did_key_jwk_thumbprint",
     # verification
     "verify_authority_evidence",
     "covers",

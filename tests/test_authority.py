@@ -13,7 +13,7 @@ from sm_authority import (
     covers,
     verify_authority_evidence,
 )
-from sm_authority.evidence import CIVIC, OIDC, PRIOR_BINDING_KEY
+from sm_authority.evidence import CIVIC, OIDC, PRIOR_BINDING_KEY, oidc_binding_nonce
 
 from .helpers import (
     ANCHOR,
@@ -170,10 +170,42 @@ def test_oidc_missing_token_block_is_indeterminate():
 
 
 def test_oidc_nonce_mismatch_refuted():
-    claims = {"iss": "https://login.microsoftonline.com", "oid": "oid-abc", "nonce": "n1"}
-    block = {"type": OIDC, "claims": {"token": make_oidc_token(claims), "nonce": "n2"}}
+    # Token nonce doesn't match the salt-derived binding nonce → refuted.
+    claims = {"iss": "https://login.microsoftonline.com", "oid": "oid-abc", "nonce": "wrong"}
+    block = {"type": OIDC, "claims": {"token": make_oidc_token(claims), "nonce_salt": "s1"}}
     v = verify_authority_evidence(envelope([block]), _oidc_verifiers(), AT)
     assert v.status == "REFUTED" and v.reason == "nonce_mismatch", v
+
+
+def test_oidc_missing_nonce_salt_is_indeterminate():
+    # A valid token, but the block predates nonce_salt → malformed under the
+    # secure default (require_nonce=True), never a silent pass.
+    claims = {"iss": "https://login.microsoftonline.com", "oid": "oid-abc", "nonce": "n1"}
+    block = {"type": OIDC, "claims": {"token": make_oidc_token(claims)}}
+    v = verify_authority_evidence(envelope([block]), _oidc_verifiers(), AT)
+    assert v.status == "INDETERMINATE"
+    assert v.evidence_results[0][1].reason == "malformed_evidence"
+
+
+def test_oidc_nonce_bound_to_a_different_grantor_is_refuted():
+    # The core replay defense: a token whose nonce commits to OTHER's DID is
+    # refuted when the envelope's grantor_did is OWNER — the token can't transfer.
+    salt = "s1"
+    claims = {"iss": "https://login.microsoftonline.com", "oid": "oid-abc",
+              "nonce": oidc_binding_nonce(OTHER.did, salt)}
+    block = build_evidence(OIDC, token=make_oidc_token(claims), nonce_salt=salt)
+    v = verify_authority_evidence(envelope([block], grantor=OWNER.did), _oidc_verifiers(), AT)
+    assert v.status == "REFUTED" and v.reason == "nonce_mismatch", v
+
+
+def test_oidc_legacy_require_nonce_false_still_verifies_with_warning():
+    # Opt-out path for migrating pre-nonce_salt evidence: unbound nonce, loud warning.
+    claims = {"iss": "https://login.microsoftonline.com", "oid": "oid-abc", "nonce": "n1"}
+    block = {"type": OIDC, "claims": {"token": make_oidc_token(claims), "nonce": "n1"}}
+    with pytest.warns(UserWarning, match="require_nonce=False"):
+        verifiers = {OIDC: OIDCVerifier(demo_token_validator, require_nonce=False)}
+    v = verify_authority_evidence(envelope([block]), verifiers, AT)
+    assert v.status == "VERIFIED", v
 
 
 def test_oidc_validator_that_raises_is_indeterminate():

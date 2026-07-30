@@ -28,10 +28,15 @@ evidence blocks, not the issuer.
 from __future__ import annotations
 
 import base64
+import hashlib
 from collections.abc import Iterable
 from typing import Any
 
 from sm_arp import Identity, canonical_bytes, pubkey_from_did
+
+
+def _b64url(data: bytes) -> str:
+    return base64.urlsafe_b64encode(data).rstrip(b"=").decode("ascii")
 
 AUTHORITY_VERSION = "authority/0.1"
 
@@ -152,3 +157,29 @@ def sign_binding_challenge(
     return base64.b64encode(
         signer.sign(binding_challenge_bytes(subject, grantor_did, challenge))
     ).decode("ascii")
+
+
+def oidc_binding_nonce(grantor_did: str, nonce_salt: str) -> str:
+    """The nonce an OIDC authorization request must carry — and that the identity
+    provider signs into the ID token — so the token commits to ``grantor_did``.
+
+    The evidence block ships only ``nonce_salt``; the verifier recomputes this and
+    compares it to the token's signed ``nonce``. Committing the nonce to the
+    grantor's DID is what stops a token minted for the same subject being replayed
+    to bind a *different* key: a captured token's nonce is fixed to one DID."""
+    return hashlib.sha256(f"{grantor_did}|{nonce_salt}".encode()).hexdigest()
+
+
+def did_key_jwk_thumbprint(did: str) -> str:
+    """RFC 7638 JWK thumbprint (base64url) of a ``did:key`` Ed25519 public key.
+
+    This is the account-key identity used to bind an ACME-style domain challenge to
+    a grantor: a ``domain_control`` verifier derives the RFC 8555 §8.1 key
+    authorization as ``token + "." + did_key_jwk_thumbprint(grantor_did)``, so a
+    proof published at the domain commits to the grantor's key and cannot be
+    replayed for a different one."""
+    from cryptography.hazmat.primitives.serialization import Encoding, PublicFormat
+
+    raw = pubkey_from_did(did).public_bytes(Encoding.Raw, PublicFormat.Raw)
+    jwk = {"crv": "Ed25519", "kty": "OKP", "x": _b64url(raw)}
+    return _b64url(hashlib.sha256(canonical_bytes(jwk, include_signature=False)).digest())
