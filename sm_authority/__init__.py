@@ -10,6 +10,9 @@ three-valued (VERIFIED/REFUTED/INDETERMINATE) framework. A VERIFIED result is an
 
 from __future__ import annotations
 
+from importlib.metadata import PackageNotFoundError as _PackageNotFoundError
+from importlib.metadata import version as _dist_version
+
 from sm_arp import Identity  # re-export the shared identity primitive
 
 from .evidence import (
@@ -46,7 +49,15 @@ from .verify import (
     verify_authority_evidence,
 )
 
-__version__ = "0.2.0"
+# Derived from installed distribution metadata, never hand-maintained. A literal
+# here is a second copy of pyproject's ``version`` with nothing comparing them:
+# the 0.1.0 wheel shipped ``__version__ == "0.0.1"`` against correct dist metadata
+# for exactly that reason, so a consumer's runtime version assertion read the
+# wrong number and could not detect the vulnerable release (sm-authority#2).
+try:  # pragma: no cover - trivial branch, both sides asserted in tests
+    __version__ = _dist_version("sm-authority")
+except _PackageNotFoundError:  # running from a source tree, not installed
+    __version__ = "0.0.0.dev0"
 
 __all__ = [
     "AUTHORITY_VERSION",
