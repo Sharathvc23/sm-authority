@@ -20,7 +20,7 @@ classifiers = [
 dependencies = ["sm-arp>=0.3.0"]
 
 [project.optional-dependencies]
-dev = ["pytest>=7.0", "ruff>=0.4", "mypy>=1.0", "coverage>=7.0"]
+dev = ["pytest>=7.0", "ruff==0.15.13", "mypy>=1.0", "coverage>=7.0"]
 
 [project.urls]
 Homepage = "https://github.com/Sharathvc23/sm-authority"
