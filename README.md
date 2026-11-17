@@ -13,6 +13,11 @@ blocks** (`oidc`, `platform_install`, `domain_control`, `did_control`, `civic`,
 three-valued verdict (VERIFIED / REFUTED / INDETERMINATE). A VERIFIED result *is* the
 locator↔anchor record a registry checks a binding grant against.
 
+Two reference verifiers ship: `PriorBindingKeyVerifier` (`prior_binding_key`) and
+`OIDCVerifier` (`oidc`, with the token validator injected). No verifier ships for
+`platform_install`, `domain_control`, `did_control` or `civic`; a block of one of those types
+evaluates INDETERMINATE (`unsupported_evidence_type`) unless you inject a verifier for it.
+
 ```python
 from sm_authority import (Identity, build_anchor, build_evidence, build_authority_evidence,
                           sign_authority_evidence, sign_binding_challenge,
