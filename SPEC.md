@@ -74,6 +74,10 @@ All fields listed are REQUIRED. `signature` is Ed25519 over the JCS-canonical en
 
 `build_evidence` enforces the required claims at construction. A verifier MAY require more.
 
+Reference verifiers ship for `prior_binding_key` (`PriorBindingKeyVerifier`) and `oidc`
+(`OIDCVerifier`, token validator injected) only. A block whose type has no injected verifier
+evaluates INDETERMINATE (`unsupported_evidence_type`).
+
 ---
 
 ## 5. Verification
@@ -150,5 +154,5 @@ policy, unsupported type, temporal, and tampered signature. Regenerate: `python 
 ## 10. Deferred
 
 Reference JWKS-backed OIDC validator (behind an extra) · `platform_install` / `domain_control` /
-`civic` reference verifiers · anchor privacy (pairwise `sub` vs `oid` correlation) · normative
+`did_control` / `civic` reference verifiers · anchor privacy (pairwise `sub` vs `oid` correlation) · normative
 freeze alongside `dat/0.2`.
